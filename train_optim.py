@@ -31,16 +31,14 @@ def train_optim(model, train_loader, test_loader, epochs, log_frequency, device,
       for batch_id,  batch in enumerate(train_loader) : 
 
         images, questions, labels  = batch
+        #we put the data on the same device
+        images , labels = images.to(device), labels.to(device)  
 
-        # we put the data on the same device
-        images , questions, labels = images.to(device), questions.to(device), labels.to(device)  
-        
-        y_pred = model(images, questions) # forward pass output=logits
+        y_pred = model((images, questions)) # forward pass output=logits
 
         loss = loss_fn(y_pred, labels)
 
-        if batch_id % log_frequency == 0:
-            print("epoch: {:03d}, batch: {:03d}, loss: {:.3f} ".format(t+1, batch_id+1, loss.item()))
+        print("epoch: {:03d}, batch: {:03d}, loss: {:.3f} ".format(t+1, batch_id+1, loss.item()))
 
         optimizer.zero_grad() # clear the gradient before backward
         loss.backward()       # update the gradient
@@ -53,8 +51,8 @@ def train_optim(model, train_loader, test_loader, epochs, log_frequency, device,
       correct = 0
       for batch_id, batch in enumerate(test_loader):
         images, questions, labels  = batch
-        images , questions, labels = images.to(device), questions.to(device), labels.to(device)  
-        y_pred = model(images, questions) # forward computes the logits
+        images , labels = images.to(device), labels.to(device)  
+        y_pred = model((images, questions)) # forward computes the logits
         sf_y_pred = torch.nn.Softmax(dim=1)(y_pred) # softmax to obtain the probability distribution
         _, predicted = torch.max(sf_y_pred , 1)     # decision rule, we select the max
         

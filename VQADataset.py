@@ -48,13 +48,12 @@ class VQADataset(Dataset):
       question and answer are strings
     """
     image_name = self.path + '/' + self.image_folder + '/' + self.descriptor["image_name"][idx]
-
     image = Image.open(image_name)
 
     image = self.transform(image)
 
     question = self.descriptor["question"][idx]
-
-    answer = self.descriptor["answer"][idx]
+    
+    answer =  1 if self.descriptor["answer"][idx] == "yes" else 0 
 
     return (image, question, answer)
