@@ -20,12 +20,12 @@ path = "boolean_answers_dataset_200"
 image_folder = "boolean_answers_dataset_images_200"
 descriptor = "boolean_answers_dataset_200.csv"
 
-batch_size = 2
+batch_size = 1
 
 # exemples de transformations
 transform = transforms.Compose(
-    [transforms.Resize((720,720)),
-     transforms.ToTensor(),     
+    [transforms.Resize((600,600)),
+     transforms.ToTensor(),
      transforms.Normalize((0.5, 0.5, 0.5), (0.5, 0.5, 0.5))
     ]
 )
@@ -46,7 +46,7 @@ def main():
     
     model = VQAModel(tokenizer,device)
   
-    train_optim(model, train_loader, test_loader, epochs=1, log_frequency=60, device=device, learning_rate=1e-3)
+    train_optim(model, train_loader, test_loader, epochs=1, log_frequency=60, device=device, learning_rate=1e-4)
 
 
 if __name__ == "__main__":

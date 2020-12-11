@@ -21,7 +21,6 @@ class VQAModel(torch.nn.Module):
         self.tokenizer = tokenizer
         self.device = device
         self.image_embedding = torch.nn.Sequential(*(list(models.resnet152(pretrained=True).children())[:-1]))
-        # self.question_embedding = torch.nn.Sequential(*(list(AutoModelForSequenceClassification.from_pretrained("distilbert-base-uncased").children())[:-3]))
         configuration = DistilBertConfig()
         self.question_embedding =  DistilBertModel(configuration)
         self.linear1 = torch.nn.Linear(2816, 1024)

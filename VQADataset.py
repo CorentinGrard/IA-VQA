@@ -48,7 +48,7 @@ class VQADataset(Dataset):
       question and answer are strings
     """
     image_name = self.path + '/' + self.image_folder + '/' + self.descriptor["image_name"][idx]
-    image = Image.open(image_name)
+    image = Image.open(image_name).convert('RGB')
 
     image = self.transform(image)
 

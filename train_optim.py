@@ -33,12 +33,12 @@ def train_optim(model, train_loader, test_loader, epochs, log_frequency, device,
         images, questions, labels  = batch
         #we put the data on the same device
         images , labels = images.to(device), labels.to(device)  
-
         y_pred = model((images, questions)) # forward pass output=logits
-
+        #print(labels)
+        print(y_pred)
         loss = loss_fn(y_pred, labels)
 
-        print("epoch: {:03d}, batch: {:03d}, loss: {:.3f} ".format(t+1, batch_id+1, loss.item()))
+        print("Training : epoch: {:03d}, batch: {:03d}, loss: {:.3f} ".format(t+1, batch_id+1, loss.item()))
 
         optimizer.zero_grad() # clear the gradient before backward
         loss.backward()       # update the gradient
@@ -55,8 +55,8 @@ def train_optim(model, train_loader, test_loader, epochs, log_frequency, device,
         y_pred = model((images, questions)) # forward computes the logits
         sf_y_pred = torch.nn.Softmax(dim=1)(y_pred) # softmax to obtain the probability distribution
         _, predicted = torch.max(sf_y_pred , 1)     # decision rule, we select the max
-        
         total += labels.size(0)
         correct += (predicted == labels).sum().item()
+        print("Testing : predicted: {:03d} Correct value : {:03d}".format(predicted.item(),labels.item()))
       
       print("[validation] accuracy: {:.3f}%\n".format(100 * correct / total))
